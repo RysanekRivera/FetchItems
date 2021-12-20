@@ -5,4 +5,12 @@
     <string name="item_123">Item 123</string>
     <string name="_123">123</string>
     <string name="id">ID:</string>
+    <string name="filter_list">Filter List</string>
+    <string name="filter_options">Filter Options</string>
+    <string name="no_filter">No Filter</string>
+    <string name="show_group_1_only">Group 1</string>
+    <string name="show_group_2_only">Group 2</string>
+    <string name="show_group_3_only">Group 3</string>
+    <string name="show_group_4_only">Group 4</string>
+
 </resources>

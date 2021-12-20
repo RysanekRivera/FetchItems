@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/topGroup">
+        <item android:id="@+id/miTitle"
+            android:title="@string/filter_options"/>
+    </group>
+
+    <group android:id="@+id/bottomGroup" android:enabled="true">
+
+        <item
+            android:id="@+id/miNoFilter"
+            android:title="@string/no_filter"
+            android:icon="@drawable/ic_no_filter"
+            android:iconTint="@color/red" />
+
+        <item
+            android:id="@+id/miGroup1"
+            android:title="@string/show_group_1_only"
+            android:icon="@drawable/ic_group"
+            android:iconTint="@color/highlight_blue"/>
+
+        <item
+            android:id="@+id/miGroup2"
+            android:title="@string/show_group_2_only"
+            android:icon="@drawable/ic_group"
+            android:iconTint="@color/highlight_orange"/>
+
+        <item
+            android:id="@+id/miGroup3"
+            android:title="@string/show_group_3_only"
+            android:icon="@drawable/ic_group"
+            android:iconTint="@color/highlight_pink"/>
+
+        <item
+            android:id="@+id/miGroup4"
+            android:title="@string/show_group_4_only"
+            android:icon="@drawable/ic_group"
+            android:iconTint="@color/highlight_yellow"/>
+    </group>
+
+</menu>

@@ -76,5 +76,7 @@ class GetListItems @Inject constructor(
             
         }.collect()
     
-    fun getAllListItemsFromDb() = repository.getAllListItemsFromDb()
+    fun getAllListItemsFromDbLiveData() = repository.getAllListItemsFromDbLiveData()
+    
+    fun getAllListItemsSortedFromDb(listItem: Int) = repository.getAllListItemsSortedFromDb(listItem)
 }

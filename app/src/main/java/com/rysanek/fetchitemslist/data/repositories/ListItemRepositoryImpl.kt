@@ -22,7 +22,9 @@ class ListItemRepositoryImpl @Inject constructor(
     
     override suspend fun deleteAllItemsFromDb() = dao.deleteAllItems()
     
-    override fun getAllListItemsFromDb() = dao.getAllListItems()
+    override fun getAllListItemsSortedFromDb(listId: Int) = dao.getAllItemsSortedByListId(listId)
+    
+    override fun getAllListItemsFromDbLiveData() = dao.getAllListItemsLiveData()
     
     override fun getRemoteContentLength() = fetchContentLength(GET_HEADER_URL)?.toLong() ?: -1L
     

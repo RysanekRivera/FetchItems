@@ -6,6 +6,10 @@ object Constants {
     
     const val ITEMS_TABLE = "items_table"
     
+    const val NO_CONNECTION = "No Internet Connection!"
+    
+    const val ITEM_ID = "itemId"
+    
     const val LIST_ID = "list_id"
     
     const val ITEM_NAME = "name"
@@ -21,5 +25,7 @@ object Constants {
     const val WORK_NAME = "fetch_work"
     
     const val CACHE_INTERVAL = 900000L
+    
+    const val MENU_CHECKED_ITEM = "menu_checked_item"
     
 }

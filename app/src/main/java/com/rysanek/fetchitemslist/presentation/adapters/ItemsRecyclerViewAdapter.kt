@@ -32,7 +32,7 @@ class ItemsRecyclerViewAdapter: RecyclerView.Adapter<ItemsRecyclerViewAdapter.It
                 2 -> R.color.highlight_orange
                 3 -> R.color.highlight_pink
                 4 -> R.color.highlight_yellow
-                else -> R.color.highlight_acqua
+                else -> R.color.highlight_aqua
             }
             
             with(binding){
