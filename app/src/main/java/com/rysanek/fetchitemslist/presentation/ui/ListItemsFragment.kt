@@ -3,7 +3,6 @@ package com.rysanek.fetchitemslist.presentation.ui
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -16,21 +15,20 @@ import com.rysanek.fetchitemslist.data.util.Constants.NO_CONNECTION
 import com.rysanek.fetchitemslist.data.util.DownloadState
 import com.rysanek.fetchitemslist.databinding.FragmentListItemsBinding
 import com.rysanek.fetchitemslist.presentation.adapters.ItemsRecyclerViewAdapter
-import com.rysanek.fetchitemslist.presentation.utils.gone
-import com.rysanek.fetchitemslist.presentation.utils.show
-import com.rysanek.fetchitemslist.presentation.utils.showSnackBar
+import com.rysanek.fetchitemslist.presentation.utils.*
 import com.rysanek.fetchitemslist.presentation.viewmodels.ListItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ListItemsFragment : Fragment() {
+class ListItemsFragment: Fragment() {
     
     private val viewModel: ListItemViewModel by viewModels()
     private var _rvAdapter: ItemsRecyclerViewAdapter? = null
     private val rvAdapter get() = _rvAdapter!!
     private var _binding: FragmentListItemsBinding? = null
     private val binding get() = _binding!!
-    private var popupMenu: PopupMenu? = null
+    private var _popupMenu: PopupMenu? = null
+    private val popupMenu get() = _popupMenu!!
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -75,7 +73,8 @@ class ListItemsFragment : Fragment() {
     
     /**
      * Dynamically tracks the list of items from the db and automatically changes the list
-     * when a filter is requested**/
+     * when a filter is requested
+     * */
     private fun trackItemsListFromDB() {
         viewModel.sortedList.observe(viewLifecycleOwner) { data ->
             data.observe(viewLifecycleOwner) { liveData ->
@@ -87,7 +86,7 @@ class ListItemsFragment : Fragment() {
     /**
      * Handles the UI during the different states of updating data from the server.
      * @param state [DownloadState].
-     */
+     * */
     private fun handleDownloadState(state: DownloadState?) {
         when (state) {
             is DownloadState.Idle -> { binding.progressBar.gone() }
@@ -99,38 +98,30 @@ class ListItemsFragment : Fragment() {
     }
     
     private fun setupOptionsMenu() {
+    
+        _popupMenu = PopupMenu(binding.ivFilter.context, binding.ivFilter)
+        
+        popupMenu.menuInflater.inflate(R.menu.filter_menu, popupMenu.menu)
+    
+        popupMenu.apply {
+        
+            setForceShowIcon(true)
+        
+            setOnMenuItemClickListener { menuItem -> viewModel.setSortedList(menuItem) }
+            
+            setOnDismissListener { restorePhoneOrientation() }
+        }
         
         binding.ivFilter.setOnClickListener {
-            
-            popupMenu = PopupMenu(requireContext(), it).apply {
-                inflate(R.menu.filter_menu)
-                setForceShowIcon(true)
-                setOnMenuItemClickListener { menuItem ->
-                    setupOnItemClick(menuItem)
-                    true
-                }
-                show()
-            }
+            lockPhoneOrientation()
+            popupMenu.show()
         }
-    }
-    
-    private fun setupOnItemClick(menuItem: MenuItem) {
-        val itemIdFilter = when (menuItem.itemId) {
-            R.id.miGroup1 -> 1
-            R.id.miGroup2 -> 2
-            R.id.miGroup3 -> 3
-            R.id.miGroup4 -> 4
-            else -> null
-        }
-        
-        viewModel.setSortedList(itemIdFilter)
     }
     
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _popupMenu = null
         _rvAdapter = null
-        popupMenu = null
     }
     
 }

@@ -3,13 +3,15 @@ package com.rysanek.fetchitemslist.domain.workers
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
+import androidx.work.*
+import com.rysanek.fetchitemslist.data.util.Constants
+import com.rysanek.fetchitemslist.data.util.Constants.CACHE_INTERVAL
 import com.rysanek.fetchitemslist.presentation.viewmodels.ListItemViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.Duration
 
 @HiltWorker
 class FetchWorker @AssistedInject constructor(
@@ -27,4 +29,19 @@ class FetchWorker @AssistedInject constructor(
             Result.retry()
         }
     }
+}
+
+/**
+ * Starts the work of the [FetchWorker]. In this case it will start downloading
+ * from the server and then it will check periodically after every [CACHE_INTERVAL]
+ * if the data has changed from the server, if so it will perform the work once again.
+ */
+fun Context.initializeFetchWork(){
+    val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+    val workRequest = PeriodicWorkRequestBuilder<FetchWorker>(Duration.ofMillis(CACHE_INTERVAL))
+        .setConstraints(constraints)
+        .setBackoffCriteria(BackoffPolicy.LINEAR, Duration.ofMillis(WorkRequest.MIN_BACKOFF_MILLIS))
+        .build()
+    
+    WorkManager.getInstance(this).enqueueUniquePeriodicWork(Constants.WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, workRequest)
 }

@@ -2,6 +2,7 @@ package com.rysanek.fetchitemslist.presentation.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.View
@@ -14,7 +15,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.rysanek.fetchitemslist.R
 
-/**Makes the application fullscreen, handles displays with cutouts and hides the status bar.**/
+/**
+ * Makes the application fullscreen, handles displays with cutouts and hides the status bar.
+ * */
 fun Window.fullScreenMode() {
     
     WindowCompat.setDecorFitsSystemWindows(this, true)
@@ -24,14 +27,16 @@ fun Window.fullScreenMode() {
     
     WindowInsetsControllerCompat(this, this.decorView).apply {
         
-        // hide the status bar and make transient by swipe
+        // hides the status bar and makes it transient by swipe
         hide(WindowInsetsCompat.Type.statusBars())
         
         systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }
 
-/**Makes the application fullscreen, sets the the theme and background for the activity.**/
+/**
+ * Makes the application fullscreen, sets the the theme and background for the activity.
+ * */
 fun Activity.appInitialization(){
     window.fullScreenMode()
     
@@ -40,8 +45,10 @@ fun Activity.appInitialization(){
     window.setBackgroundDrawableResource(R.drawable.fetch_items_bg)
 }
 
-/**Checks the device has internet connection.
- * @return [Boolean] - Whether or not there is an active connection.**/
+/**
+ * Checks the device has internet connection.
+ * @return [Boolean] - Whether or not there is an active connection.
+ * */
 fun Context.hasInternetConnection(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val activeNetwork = connectivityManager.activeNetwork ?: return false
@@ -54,21 +61,42 @@ fun Context.hasInternetConnection(): Boolean {
     }
 }
 
-/**Shows a [Snackbar] from a fragment
+/**
+ * Shows a [Snackbar] from a fragment
  * @param message [String]: message to be displayed
- * @param length [Int]: the duration of the pop up. Short by default.**/
+ * @param length [Int]: the duration of the pop up. Short by default.
+ * */
 fun Fragment.showSnackBar(message: String, length: Int = Snackbar.LENGTH_SHORT) {
     Snackbar.make(this.requireView(), message, length)
         .setAction("Ok") {}
         .show()
 }
 
-/**Hides a [View]**/
+/**
+ * Locks the orientation of the phone.
+ */
+fun Fragment.lockPhoneOrientation() {
+    requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+    
+}
+
+/**
+ * Grants the phone a full orientation sensor.
+ */
+fun Fragment.restorePhoneOrientation() {
+    requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+}
+
+/**
+ * Hides a [View]
+ * */
 fun View.gone() {
     this.visibility = View.GONE
 }
 
-/**Shows a [View]**/
+/**
+ * Shows a [View]
+ * */
 fun View.show() {
     this.visibility = View.VISIBLE
 }
